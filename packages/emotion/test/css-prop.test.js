@@ -1,9 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import serializer from 'jest-glamor-react'
-import { css, sheet } from 'emotion'
-
-expect.addSnapshotSerializer(serializer(sheet))
+import { css } from 'emotion'
 
 describe('css prop react', () => {
   test('basic', () => {
@@ -40,32 +37,34 @@ describe('css prop react', () => {
     const tiny = 6
 
     const bold = css`
-        display: flex;
-        font-weight: bold;`
+      display: flex;
+      font-weight: bold;
+    `
 
     const big = css`
-        composes: ${bold};
-        font-size: ${huge}`
+      ${bold};
+      font-size: ${huge};
+    `
 
-    const small = css`
-        font-size: ${tiny}`
+    const small = css`font-size: ${tiny};`
 
     const flexCenter = css`
-        display: flex;
-        justify-content: center;
-        align-items: center`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    `
 
     const tree = renderer
       .create(
         <div
           className="css__legacy-stuff"
           css={`
-              composes: ${bold} ${flexCenter};
+              ${bold}; ${flexCenter};
              `}
         >
           <h1
             css={`
-                composes: ${props.error ? big : small};
+                ${props.error ? big : small};
                 color: red
               `}
           >
@@ -96,6 +95,20 @@ describe('css prop react', () => {
       )
       .toJSON()
 
+    expect(tree).toMatchSnapshot()
+  })
+  test('specificity with composition', () => {
+    const flex = css`display: flex;`
+    const tree = renderer
+      .create(<div className={flex} css={`display: block;`} />)
+      .toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+  test('merging regular classes', () => {
+    const someClass = 'some-class'
+    const tree = renderer
+      .create(<div className={someClass} css={`display: block;`} />)
+      .toJSON()
     expect(tree).toMatchSnapshot()
   })
 })

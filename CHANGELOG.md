@@ -1,11 +1,254 @@
-## Unreleased (2017-08-22)
+## v8.0.2-12 (2017-10-01)
+
+#### :rocket: Enhancement
+* `emotion`, `react-emotion`
+  * [#363](https://github.com/emotion-js/emotion/pull/363) Recursively call functions in styled with props. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 1
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-11 (2017-09-30)
+
+#### :rocket: Enhancement
+* `babel-plugin-emotion`, `emotion-theming`, `react-emotion`
+  * [#361](https://github.com/emotion-js/emotion/pull/361) Add more context to the styled component displayName. ([@tkh44](https://github.com/tkh44))
+
+#### :bug: Bug Fix
+* `emotion`
+  * [#360](https://github.com/emotion-js/emotion/pull/360) Handle boolean values. ([@tkh44](https://github.com/tkh44))
 
 #### :house: Internal
-* `babel-plugin-emotion`, `emotion-server`, `emotion-utils`, `emotion`, `preact-emotion`, `react-emotion`
-  * [#276](https://github.com/tkh44/emotion/pull/276) chore: update packages to deeplink into their respective directories. ([@probablyup](https://github.com/probablyup))
+* `emotion`, `react-emotion`
+  * [#359](https://github.com/emotion-js/emotion/pull/359) Hoist some functions in react-emotion. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 2
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-10 (2017-09-29)
+
+#### :rocket: Enhancement
+* `babel-plugin-emotion`, `emotion-theming`, `react-emotion`, `site`
+  * [#292](https://github.com/emotion-js/emotion/pull/292) Migrate "theming" library. ([@probablyup](https://github.com/probablyup))
+
+#### Committers: 2
+- Evan Scott ([probablyup](https://github.com/probablyup))
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+
+
+## v8.0.2-9 (2017-09-27)
+
+#### :bug: Bug Fix
+* `emotion`, `react-emotion`
+  * [#352](https://github.com/emotion-js/emotion/pull/352) Check for null when evaluating input strings in createStyles. ([@tkh44](https://github.com/tkh44))
+
+#### Committers: 1
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+
+
+## v8.0.2-8 (2017-09-27)
+
+#### :rocket: Enhancement
+* `emotion`
+  * [#347](https://github.com/emotion-js/emotion/pull/347) Allow external stylis plugins. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### :memo: Documentation
+* [#348](https://github.com/emotion-js/emotion/pull/348) Document CSS prop incompatibility with babel-plugin-transform-react-inline-elements. ([@apostolos](https://github.com/apostolos))
+
+#### Committers: 2
+- Apostolos Tsakpinis ([apostolos](https://github.com/apostolos))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-7 (2017-09-25)
+
+#### :rocket: Enhancement
+* `emotion`, `react-emotion`
+  * [#346](https://github.com/emotion-js/emotion/pull/346) Allow interpolation return value to be a function. . ([@tkh44](https://github.com/tkh44))
+  * [#327](https://github.com/emotion-js/emotion/pull/327) Use cross-env to pass env vars across platforms. ([@apostolos](https://github.com/apostolos))
+
+#### :memo: Documentation
+* [#345](https://github.com/emotion-js/emotion/pull/345) Add /docs folder README and CodeSandbox.io links. ([@tkh44](https://github.com/tkh44))
+
+#### Committers: 2
+- Apostolos Tsakpinis ([apostolos](https://github.com/apostolos))
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+
+## v8.0.2-6 (2017-09-25)
+
+#### :boom: Breaking Change
+* `babel-plugin-emotion`, `emotion-server`, `emotion`, `react-emotion`
+  * [#334](https://github.com/emotion-js/emotion/pull/334) Remove component selectors. ([@tkh44](https://github.com/tkh44))
+
+#### :rocket: Enhancement
+* `react-emotion`, `site`
+  * [#232](https://github.com/emotion-js/emotion/pull/232) Allow Styled tags to be updated via withComponent. ([@ifyoumakeit](https://github.com/ifyoumakeit))
+* `emotion`
+  * [#335](https://github.com/emotion-js/emotion/pull/335) Add a WeakMap cache to createStringFromObject. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+* `babel-plugin-emotion`, `emotion`, `site`
+  * [#332](https://github.com/emotion-js/emotion/pull/332) Add support for object arguments in css prop with source maps. ([@tkh44](https://github.com/tkh44))
+
+#### :house: Internal
+* `emotion`
+  * [#339](https://github.com/emotion-js/emotion/pull/339) Don't abstract WeakMap cache. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+* Other
+  * [#333](https://github.com/emotion-js/emotion/pull/333) Run benchmarks and tests in parallel and cache packages node_modules. ([@mitchellhamilton](https://github.com/mitchellhamilton))
 
 #### Committers: 3
+- Dave Garwacke ([ifyoumakeit](https://github.com/ifyoumakeit))
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-5 (2017-09-24)
+
+#### :rocket: Enhancement
+* `babel-plugin-emotion`, `emotion-server`, `emotion`, `site`
+  * [#320](https://github.com/emotion-js/emotion/pull/320) Add Source Maps 🗺 . ([@tkh44](https://github.com/tkh44))
+
+#### :bug: Bug Fix
+* `emotion`
+  * [#326](https://github.com/emotion-js/emotion/pull/326) At rule fixes. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### :house: Internal
+* `benchmarks`
+  * [#328](https://github.com/emotion-js/emotion/pull/328) Benchmarks on Travis. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 2
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-4 (2017-09-22)
+
+#### :bug: Bug Fix
+* `emotion`
+  * [#324](https://github.com/emotion-js/emotion/pull/324) Fix multiple nested selectors in media queries. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 1
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-3 (2017-09-22)
+
+#### :boom: Breaking Change
+* `babel-plugin-emotion`, `emotion-server`, `emotion-utils`, `emotion`, `preact-emotion`, `react-emotion`
+  * [#322](https://github.com/emotion-js/emotion/pull/322) Move emotion to peerDependencies. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### :bug: Bug Fix
+* `babel-plugin-emotion`, `emotion-server`, `emotion-utils`, `emotion`, `preact-emotion`, `react-emotion`
+  * [#322](https://github.com/emotion-js/emotion/pull/322) Move emotion to peerDependencies. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 1
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-2 (2017-09-22)
+
+#### :bug: Bug Fix
+* `babel-plugin-emotion`, `emotion-server`, `emotion`, `react-emotion`
+  * [#321](https://github.com/emotion-js/emotion/pull/321) Ensure proper insert order of nested rules & atRules. ([@tkh44](https://github.com/tkh44))
+
+#### Committers: 2
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-1 (2017-09-21)
+
+#### :bug: Bug Fix
+* `babel-plugin-emotion`, `emotion`
+  * [#317](https://github.com/emotion-js/emotion/pull/317) Media query nested selector fix. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 1
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v8.0.2-0 (2017-09-20)
+
+#### :bug: Bug Fix
+* `emotion`
+  * [#316](https://github.com/emotion-js/emotion/pull/316) Handle null value in array of styles.. ([@tkh44](https://github.com/tkh44))
+
+#### Committers: 1
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+
+
+## v8.0.0-0 (2017-09-14)
+
+(This is a WIP changelog)
+
+#### :boom: Breaking Change
+- composes is gone and replaced with random interpolations ([there's a codemod](https://github.com/emotion-js/emotion-composes-codemod))
+- Nested class selectors default to `& .class` instead of `&.class` if the `&` is omitted
+
+#### :rocket: Enhancement
+- Better performance
+
+#### :bug: Bug Fix
+- All edge cases with prefixing are gone
+- css prop specificity (#308)
+
+#### :house: Internal
+- Don't convert tagged template literals to objects
+
+#### Committers: 2
+- Kye Hohenberger ([tkh44](https://github.com/tkh44))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v7.3.2 (2017-09-14)
+
+#### :rocket: Enhancement
+* `babel-plugin-emotion`
+  * [#306](https://github.com/emotion-js/emotion/pull/306) Allow all imports to be configurable. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+
+#### Committers: 1
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v7.3.0 (2017-09-13)
+
+#### :rocket: Enhancement
+* `babel-plugin-emotion`
+  * [#290](https://github.com/emotion-js/emotion/pull/290) Configurable imports. ([@ChristopherBiscardi](https://github.com/ChristopherBiscardi))
+
+#### :house: Internal
+* `babel-plugin-emotion`, `emotion`, `react-emotion`
+  * [#304](https://github.com/emotion-js/emotion/pull/304) Use babel-plugin-codegen to generate props regex. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+* `babel-plugin-emotion`
+  * [#298](https://github.com/emotion-js/emotion/pull/298) upgrade to babel-macros 1.0.0. ([@kentcdodds](https://github.com/kentcdodds))
+
+#### Committers: 3
+- Christopher Biscardi ([ChristopherBiscardi](https://github.com/ChristopherBiscardi))
+- Kent C. Dodds ([kentcdodds](https://github.com/kentcdodds))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+
+
+## v7.2.1 (2017-09-05)
+
+#### :memo: Documentation
+* [#198](https://github.com/emotion-js/emotion/pull/198) add docs for using withProps from recompose. ([@divyagnan](https://github.com/divyagnan))
+
+#### :house: Internal
+* Other
+  * [#294](https://github.com/emotion-js/emotion/pull/294) Add module name mapping for emotion-utils to .flowconfig. ([@bigslycat](https://github.com/bigslycat))
+* `babel-plugin-emotion`
+  * [#293](https://github.com/emotion-js/emotion/pull/293) Fix flowtype errors in babel-plugin-emotion. ([@bigslycat](https://github.com/bigslycat))
+* `babel-plugin-emotion`, `emotion-utils`, `emotion`, `preact-emotion`, `react-emotion`
+  * [#280](https://github.com/emotion-js/emotion/pull/280) Change rollup config. ([@mitchellhamilton](https://github.com/mitchellhamilton))
+* `babel-plugin-emotion`, `emotion-server`, `emotion-utils`, `emotion`, `preact-emotion`, `react-emotion`
+  * [#276](https://github.com/emotion-js/emotion/pull/276) chore: update packages to deeplink into their respective directories. ([@probablyup](https://github.com/probablyup))
+
+#### Committers: 6
+- Christopher Biscardi ([ChristopherBiscardi](https://github.com/ChristopherBiscardi))
+- Divyagnan Kandala ([divyagnan](https://github.com/divyagnan))
 - Evan Scott ([probablyup](https://github.com/probablyup))
+- Mitchell Hamilton ([mitchellhamilton](https://github.com/mitchellhamilton))
+- Pavel ([bigslycat](https://github.com/bigslycat))
+- Siddharth Kshetrapal ([siddharthkp](https://github.com/siddharthkp))
 
 
 ## v7.2.0 (2017-08-20)

@@ -1,3 +1,5 @@
+import { addSourceMaps } from './source-map'
+
 export default function(path, state, t) {
   let cssPath
   let classNamesPath
@@ -10,7 +12,7 @@ export default function(path, state, t) {
     const attrPath = openElPath.get('name')
     const name = attrPath.node.name
 
-    if (name === 'css') {
+    if (name === state.importedNames.css) {
       cssPath = attrPath
     }
 
@@ -45,33 +47,45 @@ export default function(path, state, t) {
       )
     )
   } else {
-    cssTemplateExpression = t.callExpression(getCssIdentifer(), [cssPropValue])
+    const args = state.opts.sourceMap
+      ? [
+          cssPropValue,
+          t.stringLiteral(addSourceMaps(cssPath.node.loc.start, state))
+        ]
+      : [cssPropValue]
+    cssTemplateExpression = t.callExpression(getCssIdentifer(), args)
   }
-
-  if (!classNamesValue) {
+  if (
+    !classNamesValue ||
+    (t.isStringLiteral(classNamesValue) && !classNamesValue.value)
+  ) {
+    if (classNamesPath) classNamesPath.parentPath.remove()
     cssPath.parentPath.replaceWith(createClassNameAttr(cssTemplateExpression))
     return
   }
 
   cssPath.parentPath.remove()
   if (t.isJSXExpressionContainer(classNamesValue)) {
-    classNamesPath.parentPath.replaceWith(
-      createClassNameAttr(
-        add(
-          add(classNamesValue.expression, t.stringLiteral(' ')),
-          cssTemplateExpression
-        )
+    const args = [
+      add(
+        cssTemplateExpression,
+        add(t.stringLiteral(' '), classNamesValue.expression)
       )
+    ]
+
+    if (state.opts.sourceMap) {
+      args.push(t.stringLiteral(addSourceMaps(cssPath.node.loc.start, state)))
+    }
+
+    classNamesPath.parentPath.replaceWith(
+      createClassNameAttr(t.callExpression(getMergeIdentifier(), args))
     )
   } else {
     classNamesPath.parentPath.replaceWith(
       createClassNameAttr(
         add(
-          add(
-            t.stringLiteral(classNamesValue.value || ''),
-            t.stringLiteral(' ')
-          ),
-          cssTemplateExpression
+          cssTemplateExpression,
+          t.stringLiteral(` ${classNamesValue.value || ''}`)
         )
       )
     )
@@ -91,11 +105,24 @@ export default function(path, state, t) {
   function getCssIdentifer() {
     if (state.opts.autoImportCssProp !== false) {
       if (!state.cssPropIdentifier) {
-        state.cssPropIdentifier = path.scope.generateUidIdentifier('css')
+        state.cssPropIdentifier = path.hub.file.addImport('emotion', 'css')
       }
       return state.cssPropIdentifier
     } else {
-      return t.identifier('css')
+      return t.identifier(state.importedNames.css)
+    }
+  }
+  function getMergeIdentifier() {
+    if (state.opts.autoImportCssProp !== false) {
+      if (!state.cssPropMergeIdentifier) {
+        state.cssPropMergeIdentifier = path.hub.file.addImport(
+          'emotion',
+          'merge'
+        )
+      }
+      return state.cssPropMergeIdentifier
+    } else {
+      return t.identifier(state.importedNames.merge)
     }
   }
   function createCssTemplateExpression(templateLiteral) {

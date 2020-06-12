@@ -1,89 +1,129 @@
-import { createElement as h } from 'react'
-import { css } from 'emotion'
-import { map, reduce, assign, omit } from 'emotion-utils'
-import propsRegexString from /* preval */ './props'
+/* global codegen */
+import { createElement, Component } from 'react'
+import { memoize } from 'emotion-utils'
+import { css, getRegisteredStyles } from 'emotion'
+import { channel, contextTypes } from '../../emotion-theming/src/utils'
 
 export * from 'emotion'
 
-const push = (obj, items) => Array.prototype.push.apply(obj, items)
+function setTheme(theme) {
+  this.setState({ theme })
+}
 
-const reactPropsRegex = new RegExp(propsRegexString)
-const testOmitPropsOnStringTag = key => reactPropsRegex.test(key)
+function componentWillMount() {
+  if (this.context[channel] !== undefined) {
+    this.unsubscribe = this.context[channel].subscribe(setTheme.bind(this))
+  }
+}
+function componentWillUnmount() {
+  if (this.unsubscribe !== undefined) {
+    this.context[channel].unsubscribe(this.unsubscribe)
+  }
+}
+
+const reactPropsRegex = codegen.require('./props')
+const testOmitPropsOnStringTag = memoize(key => reactPropsRegex.test(key))
 const testOmitPropsOnComponent = key => key !== 'theme' && key !== 'innerRef'
+const testAlwaysTrue = () => true
 
-export default function(tag, cls, objs, vars = [], content) {
-  if (!tag) {
-    throw new Error(
-      'You are trying to create a styled element with an undefined component.\nYou may have forgotten to import it.'
-    )
+const omitAssign = function(testFn, target) {
+  let i = 2
+  let length = arguments.length
+  for (; i < length; i++) {
+    let source = arguments[i]
+    let key
+    for (key in source) {
+      if (testFn(key)) {
+        target[key] = source[key]
+      }
+    }
   }
+  return target
+}
 
-  const componentTag = tag.displayName || tag.name || 'Component'
-  const spec = {
-    vars,
-    content,
-    objs,
-    tag,
-    cls
+const createStyled = (tag, options: { e: string }) => {
+  if (process.env.NODE_ENV !== 'production') {
+    if (tag === undefined) {
+      throw new Error(
+        'You are trying to create a styled element with an undefined component.\nYou may have forgotten to import it.'
+      )
+    }
   }
-  const newSpec =
-    tag.__emotion_spec !== undefined ? tag.__emotion_spec.concat(spec) : [spec]
-  const localTag = newSpec[0].tag
+  let staticClassName = false
+  if (options !== undefined && options.e !== undefined) {
+    staticClassName = options.e
+  }
+  const isReal = tag.__emotion_real === tag
+  const baseTag =
+    staticClassName === false ? (isReal && tag.__emotion_base) || tag : tag
 
   const omitFn =
-    typeof localTag === 'string'
+    typeof baseTag === 'string'
       ? testOmitPropsOnStringTag
       : testOmitPropsOnComponent
-  function Styled(props, context) {
-    const getValue = v => {
-      if (v && typeof v === 'function') {
-        if (v.__emotion_class !== undefined) {
-          return `& .${v.__emotion_class}`
-        }
-        return v(props, context)
+
+  return (strings, ...interpolations) => {
+    let styles = (isReal && tag.__emotion_styles) || []
+    if (staticClassName === false) {
+      if (strings == null || strings.raw === undefined) {
+        styles = styles.concat(strings, interpolations)
+      } else {
+        styles = interpolations.reduce(
+          (array, interp, i) => array.concat(interp, strings[i + 1]),
+          styles.concat(strings[0])
+        )
       }
-
-      return v
     }
 
-    let finalObjs = []
+    class Styled extends Component {
+      render() {
+        const { props, state } = this
+        this.mergedProps = omitAssign(testAlwaysTrue, {}, props, {
+          theme: (state !== null && state.theme) || props.theme || {}
+        })
 
-    push(
-      finalObjs,
-      reduce(
-        newSpec,
-        (accum, spec) => {
-          push(accum, spec.objs)
-          if (spec.content) {
-            accum.push(spec.content.apply(null, map(spec.vars, getValue)))
+        let className = ''
+        let classInterpolations = []
+
+        if (props.className) {
+          if (staticClassName === false) {
+            className += getRegisteredStyles(
+              classInterpolations,
+              props.className
+            )
+          } else {
+            className += `${props.className} `
           }
-          accum.push(spec.cls)
-          return accum
-        },
-        []
-      )
-    )
+        }
+        if (staticClassName === false) {
+          className += css.apply(this, styles.concat(classInterpolations))
+        } else {
+          className += staticClassName
+        }
 
-    if (props.className) {
-      push(finalObjs, props.className.split(' '))
+        return createElement(
+          baseTag,
+          omitAssign(omitFn, {}, props, { className, ref: props.innerRef })
+        )
+      }
+    }
+    Styled.prototype.componentWillMount = componentWillMount
+    Styled.prototype.componentWillUnmount = componentWillUnmount
+    Styled.contextTypes = contextTypes
+    Styled.__emotion_styles = styles
+    Styled.__emotion_base = baseTag
+    Styled.__emotion_real = Styled
+
+    Styled.displayName = `Styled(${typeof baseTag === 'string'
+      ? baseTag
+      : baseTag.displayName || baseTag.name || 'Component'})`
+
+    Styled.withComponent = nextTag => {
+      return createStyled(nextTag, options)(styles)
     }
 
-    const className = css(map(finalObjs, getValue))
-
-    return h(
-      localTag,
-      omit(
-        assign({}, props, {
-          ref: props.innerRef,
-          className
-        }),
-        omitFn
-      )
-    )
+    return Styled
   }
-
-  Styled.displayName = `styled(${componentTag})`
-  Styled.__emotion_spec = newSpec
-  Styled.__emotion_class = cls
-  return Styled
 }
+
+export default createStyled

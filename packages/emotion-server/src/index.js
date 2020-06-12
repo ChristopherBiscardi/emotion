@@ -1,5 +1,4 @@
-import { sheet, inserted } from 'emotion'
-import { keys, forEach } from 'emotion-utils'
+import { sheet, inserted, registered } from 'emotion'
 
 export * from 'emotion'
 
@@ -17,23 +16,18 @@ export function extractCritical(html) {
     }
   }
 
-  o.rules = sheet.sheet.cssRules.slice().filter(x => {
+  o.rules = sheet.sheet.slice().filter(x => {
     RGX.lastIndex = 0
-    let match = RGX.exec(x.cssText)
+    let match = RGX.exec(x)
     const ret = match == null || ids[match[1]] || false
     return ret
   })
 
-  o.ids = keys(inserted).filter(
-    id =>
-      !!ids[id] ||
-      sheet.registered[id].type === 'raw' ||
-      sheet.registered[id].type === 'keyframes'
-  )
+  o.ids = Object.keys(inserted).filter(id => {
+    return !!ids[id] || !registered[`css-${id}`]
+  })
 
-  let css = ''
-  forEach(o.rules, x => (css += x.cssText))
-  o.css = css
+  o.css = o.rules.join('')
 
   return o
 }

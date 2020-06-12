@@ -17,9 +17,7 @@ describe('fontFace babel', () => {
                url(MgOpenModernaBold.ttf);
           font-weight: bold;
       \`;`
-      const { code } = babel.transform(basic, {
-        plugins: [[plugin]]
-      })
+      const { code } = babel.transform(basic, { plugins: [[plugin]] })
       expect(code).toMatchSnapshot()
     })
     test('interpolation', () => {
@@ -31,9 +29,48 @@ describe('fontFace babel', () => {
                url(MgOpenModernaBold.ttf);
           font-weight: bold;
       \`;`
+      const { code } = babel.transform(basic, { plugins: [[plugin]] })
+      expect(code).toMatchSnapshot()
+    })
+    test('static change import', () => {
+      const basic = `
+        f\`
+          font-family: MyHelvetica;
+          src: local("Helvetica Neue Bold"),
+               local("HelveticaNeue-Bold"),
+               url(MgOpenModernaBold.ttf);
+          font-weight: bold;
+      \`;
+        fontFace\`
+          font-family: MyHelvetica;
+          src: local("Helvetica Neue Bold"),
+              local("HelveticaNeue-Bold"),
+              url(MgOpenModernaBold.ttf);
+          font-weight: bold;
+      \`;`
       const { code } = babel.transform(basic, {
-        plugins: [[plugin]]
+        plugins: [[plugin, { importedNames: { fontFace: 'f' } }]]
       })
+      expect(code).toMatchSnapshot()
+    })
+    test('dynamic change import', () => {
+      const basic = `
+        import { fontFace as f } from 'emotion';
+        f\`
+          font-family: MyHelvetica;
+          src: local("Helvetica Neue Bold"),
+               local("HelveticaNeue-Bold"),
+               url(MgOpenModernaBold.ttf);
+          font-weight: bold;
+      \`;
+        fontFace\`
+          font-family: MyHelvetica;
+          src: local("Helvetica Neue Bold"),
+              local("HelveticaNeue-Bold"),
+              url(MgOpenModernaBold.ttf);
+          font-weight: bold;
+      \`;`
+      const { code } = babel.transform(basic, { plugins: [[plugin]] })
       expect(code).toMatchSnapshot()
     })
   })

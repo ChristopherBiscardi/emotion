@@ -58,7 +58,7 @@ const getComponents = () => {
   `
 
   const Main = styled.main`
-    composes: ${hoverStyles};
+    ${hoverStyles};
     display: flex;
   `
 
@@ -84,17 +84,19 @@ const getComponents = () => {
     }
   `
 
-  const Page1 = () =>
+  const Page1 = () => (
     <Main>
       <Image size={30} />
       <Image size={100} />
       <Image />
     </Main>
+  )
 
-  const Page2 = () =>
+  const Page2 = () => (
     <Main>
       <div>Hello</div>
     </Main>
+  )
   return { Page1, Page2 }
 }
 
@@ -114,6 +116,6 @@ describe('hydration', () => {
     hydrate(ids)
     const { Page1: NewPage1 } = getComponents()
     renderToString(<NewPage1 />)
-    expect(sheet.sheet.cssRules).toMatchSnapshot()
+    expect(sheet.sheet).toMatchSnapshot()
   })
 })
